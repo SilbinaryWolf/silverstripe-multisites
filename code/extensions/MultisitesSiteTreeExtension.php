@@ -71,22 +71,22 @@ class MultisitesSiteTreeExtension extends SiteTreeExtension {
 		$site = DataObject::get_by_id('Site', (int)Multisites::inst()->getDefaultSiteId());
 		//Debug::dump($siteID);
 		if(!$site || !$site->exists()) {
-			static $inOnBeforeWriteCall = false;
-			if ($inOnBeforeWriteCall) {
-				throw new Exception('Write loop with '.get_class($this->owner));
+			static $inSetupTest = false;
+			if ($inSetupTest === false) {
+				$inSetupTest = true;
+				$site = Site::create();
+				if (!($site instanceof Site)) {
+					throw new Exception('"Site" class not found.');
+				}
+				// NOTE(Jake): SiteTreeBacklinksTest.yml sets the ID of a page explictly, so we need to ensure
+				//			   there isn't a clash.
+				$site->ID = 1000000;
+				$site->Title = _t('Multisites.DEFAULTSITE', 'Default Site');
+				$site->IsDefault = true;
+				$site->write();
+				$site->publish('Stage', 'Live');
+				$inSetupTest = false;
 			}
-			$inOnBeforeWriteCall = true;
-			class_exists('Site');
-			$site = Site::create();
-			// NOTE(Jake): SiteTreeBacklinksTest.yml sets the ID of a page explictly, so we need to ensure
-			//			   there isn't a clash.
-			$site->ID = 1000000;
-			$site->Title = _t('Multisites.DEFAULTSITE', 'Default Site');
-			$site->IsDefault = true;
-			$site->write();
-			$site->publish('Stage', 'Live');
-
-			$inOnBeforeWriteCall = false;
 
 			/*static $inOnBeforeWriteCall = false;
 			if ($inOnBeforeWriteCall !== false) {
