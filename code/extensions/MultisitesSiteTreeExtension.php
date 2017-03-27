@@ -70,6 +70,7 @@ class MultisitesSiteTreeExtension extends SiteTreeExtension {
 
 			$this->owner->SiteID = Multisites::inst()->getDefaultSiteId();
 			$this->owner->ParentID = $this->owner->SiteID;
+			$this->owner->flushCache();
 		}
 	}
 
