@@ -86,6 +86,7 @@ class MultisitesSiteTreeExtension extends SiteTreeExtension {
 				$site->write();
 				$site->publish('Stage', 'Live');
 				$inSetupTest = false;
+				Multisites::inst()->init();
 			}
 
 			/*static $inOnBeforeWriteCall = false;
@@ -99,7 +100,7 @@ class MultisitesSiteTreeExtension extends SiteTreeExtension {
 			$site = DataObject::get_by_id('Site', (int)Multisites::inst()->getDefaultSiteId());*/
 		}
 
-		$this->owner->SiteID = $site->ID;
+		$this->owner->SiteID = (int)Multisites::inst()->getDefaultSiteId();
 		if (!$this->owner->ParentID) {
 			$this->owner->ParentID = $this->owner->SiteID;
 		}
