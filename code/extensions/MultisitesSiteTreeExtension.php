@@ -55,11 +55,19 @@ class MultisitesSiteTreeExtension extends SiteTreeExtension {
 	}
 
 	public function validate(ValidationResult $result) {
-		// Ensure 'cms/tests' pass by creating a 'Site' object if one does not exist.
-		if (SapphireTest::is_running_test() && !$this->owner->SiteID && !$this->owner->ParentID) {
-			if(DB::query("SELECT COUNT(*) FROM \"SiteTree\" WHERE \"ClassName\" = 'Site'")->value() > 0) {
-				return;
-			}
+		$this->setupTest();
+	}
+
+	private function setupTest() {
+		if (!SapphireTest::is_running_test()) {
+			return;
+		}
+		if ($this->owner->SiteID || $this->owner instanceof Site) {
+			return;
+		}
+		$site = DataObject::get_by_id('Site', (int)Multisites::inst()->getDefaultSiteId());
+		//Debug::dump($siteID);
+		if(!$site || !$site->exists()) {
 			static $inOnBeforeWriteCall = false;
 			if ($inOnBeforeWriteCall !== false) {
 				return;
@@ -68,9 +76,12 @@ class MultisitesSiteTreeExtension extends SiteTreeExtension {
 			singleton('Site')->requireDefaultRecords();
 			$inOnBeforeWriteCall = false;
 
-			$this->owner->SiteID = Multisites::inst()->getDefaultSiteId();
+			$site = DataObject::get_by_id('Site', (int)Multisites::inst()->getDefaultSiteId());
+		}
+
+		$this->owner->SiteID = $site->ID;
+		if (!$this->owner->ParentID) {
 			$this->owner->ParentID = $this->owner->SiteID;
-			$this->owner->flushCache();
 		}
 	}
 
@@ -78,13 +89,21 @@ class MultisitesSiteTreeExtension extends SiteTreeExtension {
 	 * Keep the SiteID field consistent.
 	 */
 	public function onBeforeWrite() {
-		// Set the SiteID (and ParentID if required) for all new pages.
-		if(!$this->owner->ID) {
-			if ($this->owner instanceof Site){
+		if ($this->owner instanceof Site) {
+			if(!$this->owner->ID) {
 				// Initialise a new Site to the top level
 				$this->owner->SiteID = 0;
 				$this->owner->ParentID = 0;
-			} elseif (($parent = $this->owner->Parent()) && $parent->ID) {
+			}
+			return;
+		}
+
+		$this->setupTest();
+
+		// Set the SiteID (and ParentID if required) for all new pages.
+		if(!$this->owner->ID) {
+			$parent = $this->owner->Parent();
+			if ($parent && $parent->exists()) {
 				// Page is beneath a Site
 				if($parent instanceof Site) {
 					$this->owner->SiteID = $parent->ID;
@@ -99,7 +118,7 @@ class MultisitesSiteTreeExtension extends SiteTreeExtension {
 		}
 		
 		// Make sure SiteID is changed when site tree is reorganised.
-		if ($this->owner->ID && !($this->owner instanceof Site) && $this->owner->isChanged('ParentID')) {
+		if ($this->owner->ID && $this->owner->isChanged('ParentID')) {
 			// Get the new parent
 			$parent = DataObject::get_by_id('SiteTree', $this->owner->ParentID);
 			
