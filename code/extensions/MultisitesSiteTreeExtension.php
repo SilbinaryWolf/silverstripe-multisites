@@ -71,25 +71,7 @@ class MultisitesSiteTreeExtension extends SiteTreeExtension {
 		$site = DataObject::get_by_id('Site', (int)Multisites::inst()->getDefaultSiteId());
 		//Debug::dump($siteID);
 		if(!$site || !$site->exists()) {
-			static $inSetupTest = false;
-			if ($inSetupTest === false) {
-				$inSetupTest = true;
-				$site = Site::create();
-				if (!($site instanceof Site)) {
-					throw new Exception('"Site" class not found.');
-				}
-				// NOTE(Jake): SiteTreeBacklinksTest.yml sets the ID of a page explictly, so we need to ensure
-				//			   there isn't a clash.
-				$site->ID = 1000000;
-				$site->Title = _t('Multisites.DEFAULTSITE', 'Default Site');
-				$site->IsDefault = true;
-				$site->write();
-				$site->publish('Stage', 'Live');
-				$inSetupTest = false;
-				Multisites::inst()->init();
-			}
-
-			/*static $inOnBeforeWriteCall = false;
+			static $inOnBeforeWriteCall = false;
 			if ($inOnBeforeWriteCall !== false) {
 				return;
 			}
@@ -97,7 +79,10 @@ class MultisitesSiteTreeExtension extends SiteTreeExtension {
 			singleton('Site')->requireDefaultRecords();
 			$inOnBeforeWriteCall = false;
 
-			$site = DataObject::get_by_id('Site', (int)Multisites::inst()->getDefaultSiteId());*/
+			$site = DataObject::get_by_id('Site', (int)Multisites::inst()->getDefaultSiteId());
+			if (!$site) {
+				throw new Exception('Unexpected error. Could not retrieve default Site record.');
+			}
 		}
 
 		$this->owner->SiteID = (int)Multisites::inst()->getDefaultSiteId();
