@@ -70,6 +70,9 @@ class MultisitesSiteTreeExtension extends SiteTreeExtension {
 			$inOnBeforeWriteCall = true;
 			singleton('Site')->requireDefaultRecords();
 			$inOnBeforeWriteCall = false;
+			Debug::dump('YEAH '.Multisites::inst()->getDefaultSiteId());
+		} else {
+			Debug::dump('HUH '.Multisites::inst()->getDefaultSiteId());
 		}
 
 		// Set the SiteID (and ParentID if required) for all new pages.
