@@ -141,10 +141,9 @@ class MultisitesCMSMainTest extends CMSMainTest {
 
 		// Test that parentID is respected when not filtering
 		$pages = $controller->getList(array(), $page3->ID);
-		$this->assertEquals(3, $pages->count());
+		$this->assertEquals(2, $pages->count());
 		$this->assertEquals(
-				// NOTE: Prepend 'Default Site'
-				array('Default Site', 'Page 3.1', 'Page 3.2'),
+				array('Page 3.1', 'Page 3.2'),
 				$pages->column('Title')
 		);
 	}

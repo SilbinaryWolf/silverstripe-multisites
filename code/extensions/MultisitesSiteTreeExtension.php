@@ -107,6 +107,10 @@ class MultisitesSiteTreeExtension extends SiteTreeExtension {
 				$this->owner->updateSiteID($siteId);
 			}	
 		}
+
+		if (!$this->owner->SiteID) {
+			throw new Exception('Missing SiteID. Current site ID is: '.Multisites::inst()->getDefaultSiteId());
+		}
 	}
 	
 	/**
