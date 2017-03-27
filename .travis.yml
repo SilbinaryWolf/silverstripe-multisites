@@ -30,10 +30,11 @@ before_script:
  - git clone git://github.com/silverstripe-labs/silverstripe-travis-support.git ~/travis-support
  - php ~/travis-support/travis_setup.php --source `pwd` --target ~/builds/ss
  - cd ~/builds/ss
-# Remove bad CMS tests
- - rm -r cms/tests/controller/CMSMainTest.php
- - rm -r cms/tests/controller/CMSSiteTreeFilterTest.php
 
 script:
  - vendor/bin/phpunit multisites/tests/
+ # Remove bad CMS tests
+ - rm -r cms/tests/controller/CMSMainTest.php
+ - rm -r cms/tests/controller/CMSSiteTreeFilterTest.php
+
  - vendor/bin/phpunit cms/tests/

@@ -59,6 +59,7 @@ class MultisitesSiteTreeExtension extends SiteTreeExtension {
 	 */
 	public function onBeforeWrite() {
 		// Ensure 'cms/tests' pass by creating a 'Site' object if one does not exist.
+		Debug::dump(SapphireTest::is_running_test()); 
 		if (SapphireTest::is_running_test() && !$this->owner->SiteID) {
 			if(DB::query("SELECT COUNT(*) FROM \"SiteTree\" WHERE \"ClassName\" = 'Site'")->value() > 0) {
 				return;
