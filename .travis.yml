@@ -33,6 +33,6 @@ before_script:
 
 script:
  - vendor/bin/phpunit multisites/tests/
- - rm -r cms/tests/controller/CMSMainTest.php
- - rm -r cms/tests/controller/CMSSiteTreeFilterTest.php
+ - rm cms/tests/controller/CMSMainTest.php
+ - rm cms/tests/controller/CMSSiteTreeFilterTest.php
  - vendor/bin/phpunit cms/tests/
