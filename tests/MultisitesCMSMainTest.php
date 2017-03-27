@@ -13,7 +13,8 @@ class MultisitesCMSMainTest extends CMSMainTest {
 	}
 
 	public function testSiteTreeHints() {
-		$this->skipTest = true;
+		$this->markTestSkipped(__FUNCTION__.' not implemented for Multisites.');
+		return;
 	}
 
 	public function testBreadcrumbs() {
@@ -28,14 +29,11 @@ class MultisitesCMSMainTest extends CMSMainTest {
 
 		$this->assertNotNull($crumbs);
 		$this->assertEquals(4, count($crumbs));
-		$this->assertEquals('Page 3', (string)$crumbs[1]);
-		$this->assertEquals('Page 3.1', (string)$crumbs[2]);
+		$this->assertEquals('Default Site', (string)$crumbs[1]);
+		$this->assertEquals('Page 3', (string)$crumbs[2]);
+		$this->assertEquals('Page 3.1', (string)$crumbs[3]);
 
 		$this->session()->inst_set('loggedInAs', null);
-	}
-
-	public function testChangedPagesFilter() {
-		
 	}
 
 	public function testPublish() {
@@ -89,7 +87,7 @@ class MultisitesCMSMainTest extends CMSMainTest {
 	}
 
 	public function testGetList() {
-		$this->skipTest = true;
+		$this->markTestSkipped(__FUNCTION__.' not implemented for Multisites.');
 		return;
 
 		$controller = new CMSMain();
