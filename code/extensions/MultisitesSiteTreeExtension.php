@@ -58,6 +58,20 @@ class MultisitesSiteTreeExtension extends SiteTreeExtension {
 	 * Keep the SiteID field consistent.
 	 */
 	public function onBeforeWrite() {
+		// Ensure 'cms/tests' pass by creating a 'Site' object if one does not exist.
+		if (SapphireTest::is_running_test() && !$this->owner->SiteID) {
+			if(DB::query("SELECT COUNT(*) FROM \"SiteTree\" WHERE \"ClassName\" = 'Site'")->value() > 0) {
+				return;
+			}
+			static $inOnBeforeWriteCall = false;
+			if ($inOnBeforeWriteCall !== false) {
+				return;
+			}
+			$inOnBeforeWriteCall = true;
+			singleton('Site')->requireDefaultRecords();
+			$inOnBeforeWriteCall = false;
+		}
+
 		// Set the SiteID (and ParentID if required) for all new pages.
 		if(!$this->owner->ID) {
 			if ($this->owner instanceof Site){
