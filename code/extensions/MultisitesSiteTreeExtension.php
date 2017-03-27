@@ -76,6 +76,7 @@ class MultisitesSiteTreeExtension extends SiteTreeExtension {
 				throw new Exception('Write loop with '.get_class($this->owner));
 			}
 			$inOnBeforeWriteCall = true;
+			class_exists('Site');
 			$site = Site::create();
 			// NOTE(Jake): SiteTreeBacklinksTest.yml sets the ID of a page explictly, so we need to ensure
 			//			   there isn't a clash.
