@@ -35,4 +35,4 @@ script:
  - vendor/bin/phpunit multisites/tests/
  - rm cms/tests/controller/CMSMainTest.php
  - rm cms/tests/controller/CMSSiteTreeFilterTest.php
- - vendor/bin/phpunit cms/tests/
+ - vendor/bin/phpunit cms/tests/ '' flush=all
