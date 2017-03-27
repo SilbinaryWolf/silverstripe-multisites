@@ -59,6 +59,9 @@ class MultisitesSiteTreeExtension extends SiteTreeExtension {
 	 */
 	public function onBeforeWrite() {
 		// Ensure 'cms/tests' pass by creating a 'Site' object if one does not exist.
+		if (!SapphireTest::is_running_test()) {
+			Debug::dump("WHAT THE");
+		}
 		if (SapphireTest::is_running_test() && !$this->owner->SiteID) {
 			if(DB::query("SELECT COUNT(*) FROM \"SiteTree\" WHERE \"ClassName\" = 'Site'")->value() > 0) {
 				return;
@@ -108,7 +111,7 @@ class MultisitesSiteTreeExtension extends SiteTreeExtension {
 			}	
 		}
 
-		if (!$this->owner->SiteID) {
+		if (!$this->owner->SiteID || !$this->owner->Site()->exists()) {
 			throw new Exception('Missing SiteID. Current site ID is: '.Multisites::inst()->getDefaultSiteId());
 		}
 	}
