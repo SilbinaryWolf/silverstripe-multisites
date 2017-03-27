@@ -33,8 +33,6 @@ before_script:
 
 script:
  - vendor/bin/phpunit multisites/tests/
- # Remove bad CMS tests
  - rm -r cms/tests/controller/CMSMainTest.php
  - rm -r cms/tests/controller/CMSSiteTreeFilterTest.php
-
  - vendor/bin/phpunit cms/tests/
