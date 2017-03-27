@@ -54,15 +54,9 @@ class MultisitesSiteTreeExtension extends SiteTreeExtension {
 		}
 	}
 
-	/**
-	 * Keep the SiteID field consistent.
-	 */
-	public function onBeforeWrite() {
+	public function validate(ValidationResult $result) {
 		// Ensure 'cms/tests' pass by creating a 'Site' object if one does not exist.
-		if (!SapphireTest::is_running_test()) {
-			Debug::dump("WHAT THE");
-		}
-		if (SapphireTest::is_running_test() && !$this->owner->SiteID) {
+		if (SapphireTest::is_running_test() && !$this->owner->SiteID && !$this->owner->ParentID) {
 			if(DB::query("SELECT COUNT(*) FROM \"SiteTree\" WHERE \"ClassName\" = 'Site'")->value() > 0) {
 				return;
 			}
@@ -73,11 +67,16 @@ class MultisitesSiteTreeExtension extends SiteTreeExtension {
 			$inOnBeforeWriteCall = true;
 			singleton('Site')->requireDefaultRecords();
 			$inOnBeforeWriteCall = false;
-			//Debug::dump('YEAH '.Multisites::inst()->getDefaultSiteId());
-		} else {
-			//Debug::dump('HUH '.Multisites::inst()->getDefaultSiteId());
-		}
 
+			$this->owner->SiteID = Multisites::inst()->getDefaultSiteId();
+			$this->owner->ParentID = $this->owner->SiteID;
+		}
+	}
+
+	/**
+	 * Keep the SiteID field consistent.
+	 */
+	public function onBeforeWrite() {
 		// Set the SiteID (and ParentID if required) for all new pages.
 		if(!$this->owner->ID) {
 			if ($this->owner instanceof Site){
@@ -111,9 +110,9 @@ class MultisitesSiteTreeExtension extends SiteTreeExtension {
 			}	
 		}
 
-		if (!$this->owner->SiteID || !$this->owner->Site()->exists()) {
-			throw new Exception('Missing SiteID. Current site ID is: '.Multisites::inst()->getDefaultSiteId());
-		}
+		//if (!$this->owner->SiteID || !$this->owner->Site()->exists()) {
+		//	throw new Exception('Missing SiteID. Current site ID is: '.Multisites::inst()->getDefaultSiteId());
+		//}
 	}
 	
 	/**
