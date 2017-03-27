@@ -12,6 +12,32 @@ class MultisitesCMSMainTest extends CMSMainTest {
 		return dirname($filename);
 	}
 
+	public function testSiteTreeHints() {
+		$this->skipTest = true;
+	}
+
+	public function testBreadcrumbs() {
+		$page3 = $this->objFromFixture('Page', 'page3');
+		$page31 = $this->objFromFixture('Page', 'page31');
+		$adminuser = $this->objFromFixture('Member', 'admin');
+		$this->session()->inst_set('loggedInAs', $adminuser->ID);
+
+		$response = $this->get('admin/pages/edit/show/' . $page31->ID);
+		$parser = new CSSContentParser($response->getBody());
+		$crumbs = $parser->getBySelector('.breadcrumbs-wrapper .crumb');
+
+		$this->assertNotNull($crumbs);
+		$this->assertEquals(4, count($crumbs));
+		$this->assertEquals('Page 3', (string)$crumbs[1]);
+		$this->assertEquals('Page 3.1', (string)$crumbs[2]);
+
+		$this->session()->inst_set('loggedInAs', null);
+	}
+
+	public function testChangedPagesFilter() {
+		
+	}
+
 	public function testPublish() {
 		$page1 = $this->objFromFixture('Page', "page1");
 		$page2 = $this->objFromFixture('Page', "page2");
