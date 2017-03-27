@@ -58,6 +58,9 @@ class MultisitesSiteTreeExtension extends SiteTreeExtension {
 		$this->setupTest();
 	}
 
+	/**
+	 * Sets up the 'Site' record in-place while running 'cms/tests' and others.
+	 */
 	private function setupTest() {
 		if (!SapphireTest::is_running_test()) {
 			return;
@@ -68,6 +71,11 @@ class MultisitesSiteTreeExtension extends SiteTreeExtension {
 		$site = DataObject::get_by_id('Site', (int)Multisites::inst()->getDefaultSiteId());
 		//Debug::dump($siteID);
 		if(!$site || !$site->exists()) {
+			static $inOnBeforeWriteCall = false;
+			if ($inOnBeforeWriteCall) {
+				throw new Exception('Write loop with '.get_class($this->owner));
+			}
+			$inOnBeforeWriteCall = true;
 			$site = Site::create();
 			// NOTE(Jake): SiteTreeBacklinksTest.yml sets the ID of a page explictly, so we need to ensure
 			//			   there isn't a clash.
@@ -76,6 +84,8 @@ class MultisitesSiteTreeExtension extends SiteTreeExtension {
 			$site->IsDefault = true;
 			$site->write();
 			$site->publish('Stage', 'Live');
+
+			$inOnBeforeWriteCall = false;
 
 			/*static $inOnBeforeWriteCall = false;
 			if ($inOnBeforeWriteCall !== false) {
@@ -107,6 +117,8 @@ class MultisitesSiteTreeExtension extends SiteTreeExtension {
 			return;
 		}
 
+		// NOTE: When building fixtures during unit tests, validation is disabled, so we must
+		//		 call this function here as well.
 		$this->setupTest();
 
 		// Set the SiteID (and ParentID if required) for all new pages.
