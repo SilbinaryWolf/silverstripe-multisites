@@ -37,6 +37,7 @@ script:
  - rm cms/tests/controller/CMSMainTest.php
  - rm cms/tests/controller/CMSSiteTreeFilterTest.php
  - rm cms/tests/controller/CMSBatchActionsTest.php
+ - rm cms/tests/model/SiteTreeTest.php
  # Assuming hardcoded ID of #1 in "SiteTreeBackLinksTest.yml" 
  # causing issues with Multisites in-place creation
  - rm cms/tests/model/SiteTreeBacklinksTest.php
