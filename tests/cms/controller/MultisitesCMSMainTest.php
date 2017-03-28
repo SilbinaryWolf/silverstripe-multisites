@@ -15,7 +15,7 @@ class MultisitesCMSMainTest extends CMSMainTest {
 
 	public function testSiteTreeHints() 
 	{
-		$this->markTestSkipped(__FUNCTION__.' not implemented for Multisites.');
+		$this->markTestSkipped(__FUNCTION__.' not implemented for Multisites. Testing this is not worth the maintainance effort.');
 		return;
 	}
 
@@ -92,10 +92,9 @@ class MultisitesCMSMainTest extends CMSMainTest {
 
 	public function testGetList() 
 	{
-		$this->markTestSkipped(__FUNCTION__.' not implemented for Multisites.');
+		$this->markTestIncomplete(__FUNCTION__.' not implemented for Multisites.');
 		return;
-
-		$controller = new CMSMain();
+		/*$controller = new CMSMain();
 
 		// Test all pages (stage)
 		$pages = $controller->getList()->sort('Title');
@@ -177,6 +176,6 @@ class MultisitesCMSMainTest extends CMSMainTest {
 		$this->assertEquals(
 				array('Page 3.1', 'Page 3.2'),
 				$pages->column('Title')
-		);
+		);*/
 	}
 }

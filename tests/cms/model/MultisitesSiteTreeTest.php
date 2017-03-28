@@ -46,12 +46,43 @@ class MultisitesSiteTreeTest extends SiteTreeTest {
 		$this->assertNotContains('Staff', $allChildren);
 	}
 
-	public function testCanSaveBlankToHasOneRelations() {
+	public function testCanSaveBlankToHasOneRelations() 
+	{
 		$this->markTestSkipped(__FUNCTION__.' not implemented for Multisites. This is because ParentID cannot be 0 with Multisites, so the test will fall over.');
-		return;
 	}
 
-	public function testGetByLink() {
-		$this->markTestIncomplete('SiteTree::get_by_link() does not give expected results with Multisites.');
+	public function testGetByLink() 
+	{
+		$this->markTestIncomplete(__FUNCTION__.' not implemented for Multisites. SiteTree::get_by_link() does not give expected results with Multisites.');
+	}
+
+	public function testURLGeneration() 
+	{
+		$this->markTestIncomplete(__FUNCTION__.' not implemented for Multisites.');
+	}
+
+	public function testPageLevel() 
+	{
+		$this->markTestIncomplete(__FUNCTION__.' not implemented for Multisites.');
+	}
+
+	public function testValidURLSegmentURLSegmentConflicts() 
+	{
+		$this->markTestIncomplete(__FUNCTION__.' not implemented for Multisites.');
+	}
+
+	public function testCanBeRoot() 
+	{
+		$this->markTestIncomplete(__FUNCTION__.' not implemented for Multisites.');
+	}
+
+	public function testGetBreadcrumbItems() 
+	{
+		$this->markTestIncomplete(__FUNCTION__.' not implemented for Multisites.');
+	}
+
+	public function testGetBreadcrumbItems() 
+	{
+		$this->markTestIncomplete(__FUNCTION__.' not implemented for Multisites.');
 	}
 }
