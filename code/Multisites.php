@@ -37,7 +37,6 @@ class Multisites {
 	public static function inst() {
 		if(!self::$inst) {
 			self::$inst = new self();
-			self::$inst->setupIfInTest();
 			self::$inst->init();
 		}
 
@@ -55,6 +54,8 @@ class Multisites {
 	 * it cannot be loaded.
 	 */
 	public function init() {
+		$this->setupIfInTest();
+
 		$cached = $this->cache->load(self::CACHE_KEY);
 		$valid  = $cached && isset($cached['hosts']) && count($cached['hosts']);
 
@@ -266,7 +267,10 @@ class Multisites {
 		return $sites->column('ID');
 	}	
 
-	protected function setupIfInTest() {
+	/**
+	 * Sets up the 'Site' record in-place while running 'cms/tests' and others.
+	 */
+	public function setupIfInTest() {
 		if (!SapphireTest::is_running_test()) {
 			return;
 		}

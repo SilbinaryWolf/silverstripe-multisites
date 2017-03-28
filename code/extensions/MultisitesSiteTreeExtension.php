@@ -62,33 +62,15 @@ class MultisitesSiteTreeExtension extends SiteTreeExtension {
 	 * Sets up the 'Site' record in-place while running 'cms/tests' and others.
 	 */
 	private function setupTest() {
-		/*if (!SapphireTest::is_running_test()) {
+		if (!SapphireTest::is_running_test()) {
 			return;
 		}
-		if ($this->owner->SiteID || $this->owner instanceof Site) {
-			return;
-		}
-		$site = DataObject::get_by_id('Site', (int)Multisites::inst()->getDefaultSiteId());
-		//Debug::dump($siteID);
-		if(!$site || !$site->exists()) {
-			static $inOnBeforeWriteCall = false;
-			if ($inOnBeforeWriteCall !== false) {
-				return;
-			}
-			$inOnBeforeWriteCall = true;
-			singleton('Site')->requireDefaultRecords();
-			$inOnBeforeWriteCall = false;
-
-			$site = DataObject::get_by_id('Site', (int)Multisites::inst()->getDefaultSiteId());
-			if (!$site) {
-				throw new Exception('Unexpected error. Could not retrieve default Site record.');
-			}
-		}
-
+		Multisites::inst()->setupIfInTest();
+		
 		$this->owner->SiteID = (int)Multisites::inst()->getDefaultSiteId();
 		if (!$this->owner->ParentID) {
 			$this->owner->ParentID = $this->owner->SiteID;
-		}*/
+		}
 	}
 
 	/**
