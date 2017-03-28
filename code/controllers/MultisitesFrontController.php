@@ -10,8 +10,6 @@ class MultisitesFrontController extends ModelAsController {
 	 * on a per-site basis
 	 **/
 	public function getNestedController() {
-		var_dump(get_class());
-
 		$request = $this->request;
 		$segment = $request->param('URLSegment');
 		$site    = Multisites::inst()->getCurrentSiteId();
