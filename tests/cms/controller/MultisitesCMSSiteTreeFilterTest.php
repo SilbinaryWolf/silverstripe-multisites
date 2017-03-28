@@ -6,13 +6,15 @@ class MultisitesCMSSiteTreeFilterTest extends CMSSiteTreeFilterTest {
 	/** 
 	 * Get parent class directory so it pulls the fixtures from that location instead.
 	 */
-	protected function getCurrentAbsolutePath() {
+	protected function getCurrentAbsolutePath() 
+	{
 		$filename = self::$test_class_manifest->getItemPath(get_parent_class($this));
 		if(!$filename) throw new LogicException("getItemPath returned null for " . get_parent_class($this));
 		return dirname($filename);
 	}
 
-	public function testSearchFilterByTitle() {
+	public function testSearchFilterByTitle() 
+	{
 		$page1 = $this->objFromFixture('Page', 'page1');
 		$page2 = $this->objFromFixture('Page', 'page2');
 	
@@ -29,7 +31,8 @@ class MultisitesCMSSiteTreeFilterTest extends CMSSiteTreeFilterTest {
 		);
 	}
 
-	public function testChangedPagesFilter() {
+	public function testChangedPagesFilter() 
+	{
 		$unchangedPage = $this->objFromFixture('Page', 'page1');
 		$unchangedPage->doPublish();
 	

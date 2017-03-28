@@ -7,18 +7,21 @@ class MultisitesSiteTreeTest extends SiteTreeTest {
 	/** 
 	 * Get parent class directory so it pulls the fixtures from that location instead.
 	 */
-	protected function getCurrentAbsolutePath() {
+	protected function getCurrentAbsolutePath() 
+	{
 		$filename = self::$test_class_manifest->getItemPath(get_parent_class($this));
 		if(!$filename) throw new LogicException("getItemPath returned null for " . get_parent_class($this));
 		return dirname($filename);
 	}
 
-	public function testCreateDefaultpages() {
+	public function testCreateDefaultpages() 
+	{
 		$this->markTestSkipped(__FUNCTION__.' not implemented for Multisites.');
 		return;
 	}
 
-	public function testChidrenOfRootAreTopLevelPages() {
+	public function testChidrenOfRootAreTopLevelPages() 
+	{
 		$pages = SiteTree::get();
 		foreach($pages as $page) $page->publish('Stage', 'Live');
 		unset($pages);
@@ -43,5 +46,9 @@ class MultisitesSiteTreeTest extends SiteTreeTest {
 		$this->assertNotContains('Staff', $allChildren);
 	}
 
-	// ::testSaveAndDrop
+	public function testCanSaveBlankToHasOneRelations() {
+		$this->markTestSkipped(__FUNCTION__.' not implemented for Multisites. This is because ParentID cannot be 0 with Multisites, so the test will fall over.');
+		return;
+	}
+
 }

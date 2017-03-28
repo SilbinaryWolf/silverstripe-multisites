@@ -6,18 +6,21 @@ class MultisitesCMSMainTest extends CMSMainTest {
 	/** 
 	 * Get parent class directory so it pulls the fixtures from that location instead.
 	 */
-	protected function getCurrentAbsolutePath() {
+	protected function getCurrentAbsolutePath() 
+	{
 		$filename = self::$test_class_manifest->getItemPath(get_parent_class($this));
 		if(!$filename) throw new LogicException("getItemPath returned null for " . get_parent_class($this));
 		return dirname($filename);
 	}
 
-	public function testSiteTreeHints() {
+	public function testSiteTreeHints() 
+	{
 		$this->markTestSkipped(__FUNCTION__.' not implemented for Multisites.');
 		return;
 	}
 
-	public function testBreadcrumbs() {
+	public function testBreadcrumbs() 
+	{
 		$page3 = $this->objFromFixture('Page', 'page3');
 		$page31 = $this->objFromFixture('Page', 'page31');
 		$adminuser = $this->objFromFixture('Member', 'admin');
@@ -36,7 +39,8 @@ class MultisitesCMSMainTest extends CMSMainTest {
 		$this->session()->inst_set('loggedInAs', null);
 	}
 
-	public function testPublish() {
+	public function testPublish() 
+	{
 		$page1 = $this->objFromFixture('Page', "page1");
 		$page2 = $this->objFromFixture('Page', "page2");
 		$this->session()->inst_set('loggedInAs', $this->idFromFixture('Member', 'admin'));
@@ -86,7 +90,8 @@ class MultisitesCMSMainTest extends CMSMainTest {
 		*/
 	}
 
-	public function testGetList() {
+	public function testGetList() 
+	{
 		$this->markTestSkipped(__FUNCTION__.' not implemented for Multisites.');
 		return;
 
