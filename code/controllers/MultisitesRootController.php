@@ -11,32 +11,34 @@ class MultisitesRootController extends RootURLController {
 		$this->pushCurrent();
 		$this->init();
 
-		if(!$site = Multisites::inst()->getCurrentSiteId()) {
-			return $this->httpError(404);
+		if(!DB::is_active() || !ClassInfo::hasTable('SiteTree')) {
+			$this->response = new SS_HTTPResponse();
+			$this->response->redirect(Director::absoluteBaseURL() . 'dev/build?returnURL=' . (isset($_GET['url']) ? urlencode($_GET['url']) : null));
+			return $this->response;
+		}
+
+		$siteID = Multisites::inst()->getCurrentSiteId();
+		if(!$siteID) {
+			return $this->httpError(404, 'Site not found.');
 		}
 
 		$page = SiteTree::get()->filter(array(
-			'ParentID'   => $site,
-			'URLSegment' => 'home'
-		));
+			'ParentID'   => $siteID,
+			'URLSegment' => static::get_homepage_link(),
+		))->first();
 
-		if(!$page = $page->first()) {
-			return $this->httpError(404);
+		if(!$page) {
+			return $this->httpError(404, 'Home not found.');
 		}
-
-		$request = new SS_HTTPRequest(
-			$request->httpMethod(),
-			$page->RelativeLink(),
-			$request->getVars(),
-			$request->postVars()
-		);
+			
+		$request->setUrl(self::get_homepage_link() . '/');
 		$request->match('$URLSegment//$Action', true);
+		$controller = new ModelAsController();
 
-		$front    = new MultisitesFrontController();
-		$response = $front->handleRequest($request, $model);
-
+		$result     = $controller->handleRequest($request, $model);
+		
 		$this->popCurrent();
-		return $response;
+		return $result;
 	}
 	
 	/**
