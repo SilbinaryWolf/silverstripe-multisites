@@ -54,6 +54,7 @@ class Multisites {
 	 * it cannot be loaded.
 	 */
 	public function init() {
+		// NOTE: Called here to ensure 'ContentControllerTest' can pass.
 		$this->setupIfInTest();
 
 		$cached = $this->cache->load(self::CACHE_KEY);

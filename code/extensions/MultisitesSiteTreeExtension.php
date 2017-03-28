@@ -62,11 +62,11 @@ class MultisitesSiteTreeExtension extends SiteTreeExtension {
 	 * Sets up the 'Site' record in-place while running 'cms/tests' and others.
 	 */
 	private function setupTest() {
-		if (!SapphireTest::is_running_test()) {
+		if (!SapphireTest::is_running_test() || $this->owner instanceof Site) {
 			return;
 		}
 		Multisites::inst()->setupIfInTest();
-		
+
 		$this->owner->SiteID = (int)Multisites::inst()->getDefaultSiteId();
 		if (!$this->owner->ParentID) {
 			$this->owner->ParentID = $this->owner->SiteID;

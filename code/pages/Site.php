@@ -42,7 +42,6 @@ class Site extends Page implements HiddenClass, PermissionProvider {
 		'IsDefault' => 'Is Default'
 	);
 
-
 	private static $icon = 'multisites/images/world.png';
 
 	public function getCMSFields() {
@@ -209,7 +208,10 @@ class Site extends Page implements HiddenClass, PermissionProvider {
 
 		DB::alteration_message('Default site created', 'created');
 
-		$pages = SiteTree::get()->exclude('ID', $site->ID)->filter('ParentID', 0);
+		$pages = SiteTree::get()->filter(array(
+			'ClassName:not' => 'Site',
+			'ParentID' => 0,
+		));
 		$count = count($pages);
 		if ($count > 0) {
 			foreach($pages as $page) {
