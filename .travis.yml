@@ -44,6 +44,5 @@ script:
  - rm cms/tests/controller/ContentControllerPermissionsTest.php
  - rm cms/tests/controller/ContentControllerTest.php
  - rm cms/tests/controller/ModelAsControllerTest.php
- - rm cms/tests/controller/ModelAsControllerTest.php
- - rm cms/tests/controller/SiteTreePermissionsTest.php
+ - rm cms/tests/model/SiteTreePermissionsTest.php
  - vendor/bin/phpunit cms/tests/ '' flush=all
