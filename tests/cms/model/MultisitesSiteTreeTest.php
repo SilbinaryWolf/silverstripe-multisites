@@ -80,9 +80,4 @@ class MultisitesSiteTreeTest extends SiteTreeTest {
 	{
 		$this->markTestIncomplete(__FUNCTION__.' not implemented for Multisites.');
 	}
-
-	public function testGetBreadcrumbItems() 
-	{
-		$this->markTestIncomplete(__FUNCTION__.' not implemented for Multisites.');
-	}
 }
