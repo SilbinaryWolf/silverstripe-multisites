@@ -32,10 +32,12 @@ before_script:
  - cd ~/builds/ss
 
 script:
- #- vendor/bin/phpunit multisites/tests/
+ - vendor/bin/phpunit multisites/tests/
  # Check multisites/tests/cms for custom overrides
  - rm cms/tests/controller/CMSMainTest.php
  - rm cms/tests/controller/CMSSiteTreeFilterTest.php
- # Uses hardcoded ID of #1 causing issues with Multisites
+ - rm cms/tests/controller/CMSBatchActionsTest.php
+ # Assuming hardcoded ID of #1 in "SiteTreeBackLinksTest.yml" 
+ # causing issues with Multisites in-place creation
  - rm cms/tests/model/SiteTreeBacklinksTest.php
  - vendor/bin/phpunit cms/tests/ '' flush=all
