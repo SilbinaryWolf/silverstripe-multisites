@@ -279,9 +279,6 @@ class Multisites {
 		if ($inCall !== false) {
 			return;
 		}
-		
-		// NOTE: Fix bug in Travis-CI where class isn't found during ModelAsControllerTest
-		class_exists('ContentControllerSearchExtension');
 
 		$inCall = true;
 		singleton('Site')->requireDefaultRecords();

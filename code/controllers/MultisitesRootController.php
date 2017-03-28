@@ -5,6 +5,7 @@
 class MultisitesRootController extends RootURLController {
 
 	public function handleRequest(SS_HTTPRequest $request, DataModel $model = null) {
+		var_dump(get_class());
 		self::$is_at_root = true;
 
 		$this->setDataModel($model);
