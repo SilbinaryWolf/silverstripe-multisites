@@ -54,33 +54,30 @@ class MultisitesFrontController extends ModelAsController {
 			if(class_exists('OldPageRedirector')){
 				if($redirect = OldPageRedirector::find_old_page(array($segment), Multisites::inst()->getCurrentSite())){
 					$redirect = SiteTree::get_by_link($redirect);
-				}
-			}else{
-				$redirect = self::find_old_page($segment, $site);			
-			}			
+					if($redirect) {
+						$getVars = $request->getVars();
+						//remove the url var as it confuses the routing
+						unset($getVars['url']);
+						
+						$url = Controller::join_links(
+								$redirect->Link(
+									Controller::join_links(
+										$request->param('Action'),
+										$request->param('ID'),
+										$request->param('OtherID')
+									)
+								)
+							);
+						
+						if(!empty($getVars)){
+							$url .= '?' . http_build_query($getVars);
+						}
+						
+						$this->response->redirect($url, 301);
 
-			if($redirect) {
-				$getVars = $request->getVars();
-				//remove the url var as it confuses the routing
-				unset($getVars['url']);
-				
-				$url = Controller::join_links(
-						$redirect->Link(
-							Controller::join_links(
-								$request->param('Action'),
-								$request->param('ID'),
-								$request->param('OtherID')
-							)
-						)
-					);
-				
-				if(!empty($getVars)){
-					$url .= '?' . http_build_query($getVars);
+						return $this->response;
+					}
 				}
-				
-				$this->response->redirect($url, 301);
-
-				return $this->response;
 			}
 
 			return $this->httpError(404, 'No page found.');
