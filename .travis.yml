@@ -32,7 +32,7 @@ before_script:
  - cd ~/builds/ss
 
 script:
- #- vendor/bin/phpunit multisites/tests/
+ - vendor/bin/phpunit multisites/tests/
  # Check multisites/tests/cms for custom overrides
  - rm cms/tests/controller/CMSMainTest.php
  - rm cms/tests/controller/CMSSiteTreeFilterTest.php
