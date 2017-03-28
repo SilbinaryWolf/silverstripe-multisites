@@ -37,6 +37,7 @@ class Multisites {
 	public static function inst() {
 		if(!self::$inst) {
 			self::$inst = new self();
+			self::$inst->setupIfInTest();
 			self::$inst->init();
 		}
 
@@ -265,4 +266,16 @@ class Multisites {
 		return $sites->column('ID');
 	}	
 
+	protected function setupIfInTest() {
+		if (!SapphireTest::is_running_test()) {
+			return;
+		}
+		static $inCall = false;
+		if ($inCall !== false) {
+			return;
+		}
+		$inCall = true;
+		singleton('Site')->requireDefaultRecords();
+		$inCall = false;
+	}
 }
