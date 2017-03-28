@@ -15,7 +15,7 @@ class MultisitesFrontController extends ModelAsController {
 		$site    = Multisites::inst()->getCurrentSiteId();
 
 		if(!$site) {
-			return $this->httpError(404);
+			return $this->httpError(404, 'Site not found.');
 		}
 
 		if(class_exists('Translatable')) Translatable::disable_locale_filter();
@@ -83,7 +83,7 @@ class MultisitesFrontController extends ModelAsController {
 				return $this->response;
 			}
 
-			return $this->httpError(404);
+			return $this->httpError(404, 'No page found.');
 		}
 
 		if(class_exists('Translatable') && $page->Locale) {
