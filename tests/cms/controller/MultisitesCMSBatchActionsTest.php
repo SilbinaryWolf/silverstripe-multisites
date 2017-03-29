@@ -14,6 +14,5 @@ class MultisitesCMSBatchActionsTest extends CMSBatchActionsTest {
 	public function testBatchRestore() 
 	{
 		$this->markTestIncomplete(__FUNCTION__.' not implemented for Multisites.');
-		return;
 	}
 }
