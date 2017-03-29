@@ -16,7 +16,6 @@ class MultisitesCMSMainTest extends CMSMainTest {
 	public function testSiteTreeHints() 
 	{
 		$this->markTestSkipped(__FUNCTION__.' not implemented for Multisites. Testing this is not worth the maintainance effort.');
-		return;
 	}
 
 	public function testBreadcrumbs() 
@@ -45,13 +44,6 @@ class MultisitesCMSMainTest extends CMSMainTest {
 		$page2 = $this->objFromFixture('Page', "page2");
 		$this->session()->inst_set('loggedInAs', $this->idFromFixture('Member', 'admin'));
 
-		// Expecting 30 published pages, but for modules like Multisites that insert another
-		// page record, you get 1 more result. (ie. 31 published pages)
-		/*$publishedCount = 30;
-		$publishedCount += SiteTree::get()->setDataQueryParam(array(
-			'Versioned.mode' => 'stage',
-			'Versioned.stage' => 'Live'
-		))->count();*/
 		$response = $this->get('admin/pages/publishall?confirm=1');
 		$this->assertContains(
 				// NOTE: Change 30 pages, to 31 pages
